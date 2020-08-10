@@ -16,3 +16,17 @@ Class I Notes
 - **Weighted vs Unweighted:**
     - **Weighted** - edges have associated weights
     - **Unweighted** - edges do not, are all the same weight
+
+## ***Graph Representations***
+- **Adjacency Matrix:**
+```py
+#   A   B   C   D
+
+# A f   T   T   T
+
+# B f   f   f   T
+
+# C f   f   f   f
+
+# D f   f   f   f
+```

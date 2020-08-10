@@ -13,26 +13,56 @@ class Graph:
         """
         Add a vertex to the graph.
         """
-        pass  # TODO
+        self.vertices[vertex_id] = set()
 
     def add_edge(self, v1, v2):
         """
         Add a directed edge to the graph.
         """
-        pass  # TODO
+        if v1 in self.vertices and v2 in self.vertices:
+            self.vertices[v1].add(v2)
+        
+        else:
+            raise IndexError("nonexistent vertex")
 
     def get_neighbors(self, vertex_id):
         """
         Get all neighbors (edges) of a vertex.
         """
-        pass  # TODO
+        return self.vertices[vertex_id]
 
     def bft(self, starting_vertex):
         """
         Print each vertex in breadth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        # Create an empty queue
+        q = Queue()
+
+        # Add starting vertex id
+        q.enqueue(starting_vertex)
+
+        # Create set for visited verts
+        visited = set()
+
+        # While queue is not empty
+        while q.size() > 0:
+
+            # Dequeue a vert
+            v = q.dequeue()
+
+            # If not visited
+            if v not in visited:
+
+                # Visit it!
+                print(v)
+
+                # Mark as visited
+                visited.add(v)
+
+                # Add all neighbors to the queue
+                for neighbor in self.get_neighbors(v):
+                    q.enqueue(neighbor)
 
     def dft(self, starting_vertex):
         """
@@ -56,7 +86,18 @@ class Graph:
         starting_vertex to destination_vertex in
         breath-first order.
         """
-        pass  # TODO
+        # Create empty queue and enqueue a path to starting vertex
+        # Create a Set to store visited vertices
+        # While the queue is not empty...
+            # Dequeue the first PATH
+            # Grab the last vertex from the PATH
+            # If that vertex has not been visited...
+                # CHECK IF IT'S THE TARGET
+                # IF SO, RETURN PATH
+                # Mark it as visited...
+                # Then add A PATH TO its neighbors to back of the queue
+                # COPY THE PATH
+                # APPEND THE NEIGHOR TO THE BACK
 
     def dfs(self, starting_vertex, destination_vertex):
         """
@@ -76,7 +117,7 @@ class Graph:
         """
         pass  # TODO
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     graph = Graph()  # Instantiate your graph
     # https://github.com/LambdaSchool/Graphs/blob/master/objectives/breadth-first-search/img/bfs-visit-order.png
     graph.add_vertex(1)
@@ -120,26 +161,26 @@ if __name__ == '__main__':
     '''
     graph.bft(1)
 
-    '''
-    Valid DFT paths:
-        1, 2, 3, 5, 4, 6, 7
-        1, 2, 3, 5, 4, 7, 6
-        1, 2, 4, 7, 6, 3, 5
-        1, 2, 4, 6, 3, 5, 7
-    '''
-    graph.dft(1)
-    graph.dft_recursive(1)
+    # '''
+    # Valid DFT paths:
+    #     1, 2, 3, 5, 4, 6, 7
+    #     1, 2, 3, 5, 4, 7, 6
+    #     1, 2, 4, 7, 6, 3, 5
+    #     1, 2, 4, 6, 3, 5, 7
+    # '''
+    # graph.dft(1)
+    # graph.dft_recursive(1)
 
-    '''
-    Valid BFS path:
-        [1, 2, 4, 6]
-    '''
-    print(graph.bfs(1, 6))
+    # '''
+    # Valid BFS path:
+    #     [1, 2, 4, 6]
+    # '''
+    # print(graph.bfs(1, 6))
 
-    '''
-    Valid DFS paths:
-        [1, 2, 4, 6]
-        [1, 2, 4, 7, 6]
-    '''
-    print(graph.dfs(1, 6))
-    print(graph.dfs_recursive(1, 6))
+    # '''
+    # Valid DFS paths:
+    #     [1, 2, 4, 6]
+    #     [1, 2, 4, 7, 6]
+    # '''
+    # print(graph.dfs(1, 6))
+    # print(graph.dfs_recursive(1, 6))

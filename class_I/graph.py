@@ -1,4 +1,15 @@
-
+class Queue():
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
 
 class Graph:
 
@@ -28,6 +39,36 @@ class Graph:
         """
         return self.vertices[vertex_id]
 
+    def bft(self, starting_vertex_id):
+
+        # Create an empty queue
+        q = Queue()
+
+        # Add starting vertex id
+        q.enqueue(starting_vertex_id)
+
+        # Create set for visited verts
+        visited = set()
+
+        # While queue is not empty
+        while q.size() > 0:
+
+            # Dequeue a vert
+            v = q.dequeue()
+
+            # If not visited
+            if v not in visited:
+
+                # Visit it!
+                print(v)
+
+                # Mark as visited
+                visited.add(v)
+
+                # Add all neighbors to the queue
+                for neighbor in self.get_neighbors(v):
+                    q.enqueue(neighbor)
+
 if __name__ == "__main__":
     g = Graph()
 
@@ -53,3 +94,7 @@ if __name__ == "__main__":
     # }
 
     print(g.vertices) #> Output: {1: {2}, 2: {1}}
+
+    g.bft(1)
+    print("---" * 10)
+    g.bft(3)

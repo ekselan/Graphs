@@ -33,11 +33,23 @@ if __name__ == "__main__":
 
     g.add_vertex(1)
     g.add_vertex(2)
+    g.add_vertex(3)
+    g.add_vertex(4)
+    g.add_vertex(5)
+    g.add_vertex(6)
+
     g.add_edge(1,2) #> (1)-->(2) Directed
-    g.add_edge(2,1) #> (1)<-->(2) Undirected
+    g.add_edge(1,4)
+    g.add_edge(2,3) #> (1)<-->(2) Undirected
+    g.add_edge(4,3)
+    g.add_edge(3,6)
+    g.add_edge(6,5)
+    g.add_edge(5,4)
 
     # ^|^|^|^|^|^|^|^|^|^|
     # self.vertices = {
     #     1: set() --> {2}
     #     2: set() --> {1}
     # }
+
+    print(g.vertices) #> Output: {1: {2}, 2: {1}}

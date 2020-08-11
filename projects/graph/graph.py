@@ -171,7 +171,7 @@ class Graph:
         """
         pass  # TODO
 
-    def dfs_recursive(self, starting_vertex, destination_vertex):
+    def dfs_recursive(self, starting_vertex, destination_vertex, visited=None, path=None):
         """
         Return a list containing a path from
         starting_vertex to destination_vertex in
@@ -179,7 +179,31 @@ class Graph:
 
         This should be done using recursion.
         """
-        pass  # TODO
+        
+        if visited is None:
+            visited = set()
+
+        if path is None:
+            path = []
+
+        visited.add(starting_vertex)
+
+        # path = path + [starting_vertex] #> one line for two lines below
+
+        path = list(path) #> make a copy
+        path.append(starting_vertex)
+
+        if starting_vertex == destination_vertex:
+            return path
+
+        for neighbor in self.get_neighbors(starting_vertex):
+
+            if neighbor not in visited:
+                new_path = self.dfs_recursive(neighbor, destination_vertex, visited, path)
+                if new_path:
+                    return new_path
+
+        return None
 
 if __name__ == "__main__":
     graph = Graph()  # Instantiate your graph
@@ -206,6 +230,7 @@ if __name__ == "__main__":
     Should print:
         {1: {2}, 2: {3, 4}, 3: {5}, 4: {6, 7}, 5: {3}, 6: {3}, 7: {1, 6}}
     '''
+    print("VERTICES")
     print(graph.vertices)
 
     '''
@@ -223,6 +248,7 @@ if __name__ == "__main__":
         1, 2, 4, 3, 7, 6, 5
         1, 2, 4, 3, 7, 5, 6
     '''
+    print("BREADTH FIRST TRAVERSAL")
     graph.bft(1)
     print("---" * 10)
 
@@ -233,8 +259,12 @@ if __name__ == "__main__":
         1, 2, 4, 7, 6, 3, 5
         1, 2, 4, 6, 3, 5, 7
     '''
+    print("DEPTH FIRST TRAVERSAL")
     graph.dft(1)
+    print("---" * 10)
+    print("DEPTH FIRST TRAVERSAL - RECURSIVE")
     graph.dft_recursive(1)
+    print("---" * 10)
 
     '''
     Valid BFS path:
@@ -248,4 +278,6 @@ if __name__ == "__main__":
     #     [1, 2, 4, 7, 6]
     # '''
     # print(graph.dfs(1, 6))
-    # print(graph.dfs_recursive(1, 6))
+    print("DEPTH FIRST SEARCH - RECURSIVE")
+    print(graph.dfs_recursive(1, 6))
+    print("---" * 10)

@@ -1,6 +1,8 @@
 import random
 
 # Bring in queue class for use with SocialGraph
+
+
 class Queue():
     def __init__(self):
         self.queue = []
@@ -17,9 +19,11 @@ class Queue():
     def size(self):
         return len(self.queue)
 
+
 class User:
     def __init__(self, name):
         self.name = name
+
 
 class SocialGraph:
     def __init__(self):
@@ -34,13 +38,18 @@ class SocialGraph:
         """
         Creates a bi-directional friendship
         """
+        # > change add_friendships to T/F for use with pup_graph2
         if user_id == friend_id:
-            print("WARNING: You cannot be friends with yourself")
+            # print("WARNING: You cannot be friends with yourself")
+            return False
         elif friend_id in self.friendships[user_id] or user_id in self.friendships[friend_id]:
-            print("WARNING: Friendship already exists")
+            # print("WARNING: Friendship already exists")
+            return False
         else:
             self.friendships[user_id].add(friend_id)
             self.friendships[friend_id].add(user_id)
+
+        return True
 
     def add_user(self, name):
         """
@@ -83,9 +92,39 @@ class SocialGraph:
         # Shuffle
         random.shuffle(possible_friendships)
 
-        for i in range(num_users * avg_friendships // 2): #> bindirectional (2)
+        for i in range(
+                num_users * avg_friendships // 2):  # > bindirectional (2)
             friendships = possible_friendships[i]
             self.add_friendship(friendships[0], friendships[1])
+
+    def populate_graph2(self, num_users, avg_friendships):
+        """ Faster runtime """
+
+        # Reset graph
+        self.reset()
+
+        # Add users
+        for i in range(num_users):
+            self.add_user(f"User {i}")
+
+        # How many friendships we want
+        target_friendships = num_users * avg_friendships
+
+        # How many we have
+        total_friendships = 0
+
+        collisions = 0
+
+        while total_friendships < target_friendships:
+            user_id = random.randint(1, self.last_id)
+            friend_id = random.randint(1, self.last_id)
+
+            if self.add_friendship(user_id, friend_id):
+                total_friendships += 2
+            else:
+                collisions += 1
+
+        print("COLLISIONS:", collisions)
 
     def get_neighbors(self, friend_id):
         """ Find friends to assist in get_all_social_paths"""
@@ -103,14 +142,15 @@ class SocialGraph:
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
 
-        # Can implement queue object to reserve first-in-first out order (degrees of sep)
+        # Can implement queue object to reserve first-in-first out order
+        # (degrees of sep)
         q = Queue()
         # Start queue with used id
         q.enqueue([user_id])
 
         # while there's something in the queue
         while q.size() > 0:
-            
+
             # Pop first item from queue
             current = q.dequeue()
 
@@ -124,7 +164,7 @@ class SocialGraph:
                 # if not visited yet, check its neighbors (should be friends)
                 # will need a get_neighbors function
                 for neighbor in self.get_neighbors(vertex):
-                    q.enqueue(current+[neighbor])
+                    q.enqueue(current + [neighbor])
 
         return visited
 
@@ -142,15 +182,16 @@ if __name__ == '__main__':
 
     # ```
     sg = SocialGraph()
-    sg.populate_graph(10, 2)
-    print("FRIENDSHIPS")
+    sg.populate_graph2(100, 2)
+    # print("FRIENDSHIPS")
     print(sg.friendships)
-    print("---" * 10)
-    # {1: {8, 10, 5}, 2: {10, 5, 7}, 3: {4}, 4: {9, 3}, 5: {8, 1, 2}, 6: {10}, 7: {2}, 8: {1, 5}, 9: {4}, 10: {1, 2, 6}}
-    connections = sg.get_all_social_paths(1)
-    print("CONNECTIONS")
-    print(connections)
-    print("---" * 10)
+    # print("---" * 10)
+    # # {1: {8, 10, 5}, 2: {10, 5, 7}, 3: {4}, 4: {9, 3}, 5: {8, 1, 2}, 6: {10}, 7: {2}, 8: {1, 5}, 9: {4}, 10: {1, 2, 6}}
+    # connections = sg.get_all_social_paths(1)
+    # print("CONNECTIONS")
+    # print(connections)
+    # print("---" * 10)
     # {1: [1], 8: [1, 8], 10: [1, 10], 5: [1, 5], 2: [1, 10, 2], 6: [1, 10, 6], 7: [1, 10, 2, 7]}
     # ```
-    # Note that in this sample, Users 3, 4 and 9 are not in User 1's extended social network.
+    # Note that in this sample, Users 3, 4 and 9 are not in User 1's extended
+    # social network.
